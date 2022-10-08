@@ -1,6 +1,4 @@
--- 
 -- First table
---
 CREATE TABLE booth (
   booth_number int NOT NULL,
   booth_price_level varchar(45) NOT NULL,
@@ -9,5 +7,7 @@ CREATE TABLE booth (
   PRIMARY KEY (booth_number),
   UNIQUE (booth_number)
 );
+
+-- Segunda tabla
 
 
