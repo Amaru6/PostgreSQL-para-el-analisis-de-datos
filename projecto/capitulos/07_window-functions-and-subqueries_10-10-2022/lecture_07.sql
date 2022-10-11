@@ -219,4 +219,4 @@ SELECT
 	RANK() OVER (PARTITION BY store ORDER BY unit_sales) AS ranking_sapal,
 	ROUND(AVG(unit_sales) OVER (PARTITION BY store),2) AS media
 FROM
-	store_sales ss;
+	store_sales ss;	
