@@ -137,3 +137,44 @@ FROM
 GROUP BY
 	trip_hour;
 
+--
+SET timezone TO 'US/Central';
+
+CREATE TABLE
+	train_rides(
+	trip_id bigserial PRIMARY KEY,
+	segment varchar(50) NOT NULL,
+	departure timestamp with time zone NOT NULL,
+	arrival timestamp with time zone NOT NULL
+	);
+	
+INSERT INTO
+	train_rides(segment, departure, arrival)
+VALUES
+	('Chicago to New York', '2017-11-13 21:30 CST', '2017-11-14 18:23 EST'),
+	('New York to New Orleans', '2017-11-15 14:15 EST', '2017-11-16 19:32 CST'),
+	('New Orleans to Los Angeles', '2017-11-17 13:45 CST', '2017-11-18 9:00 PST'),
+	('Los Angeles to San Francisco', '2017-11-19 10:10 PST', '2017-11-19 21:24 PST'),
+	('San Francisco to Denver', '2017-11-20 9:10 PST', '2017-11-21 18:38 MST'),
+	('Denver to Chicago', '2017-11-22 19:10 MST', '2017-11-23 14:50 CST');
+	
+SELECT
+	*
+FROM
+	train_rides;
+	
+SELECT
+	to_char(departure, 'YYYY-MM-DD HH12:MI a.m. TZ') AS depature,
+	arrival - departure AS segment_time
+FROM
+	train_rides;
+	
+
+-- Running Total
+
+SELECT
+	segment,
+	SUM(arrival - departure) OVER (ORDER BY trip_id ROWS BETWEEN UNBOUNDED PRECEDING
+								  AND CURRENT ROW) AS cume_time
+FROM
+	train_rides;
